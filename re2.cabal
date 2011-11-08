@@ -1,0 +1,43 @@
+name:                re2
+version:             0.0
+license:             BSD3
+license-file:        LICENSE
+synopsis:            FIXME
+category:            FIXME
+author:              Keegan McAllister <mcallister.keegan@gmail.com>
+maintainer:          Keegan McAllister <mcallister.keegan@gmail.com>
+homepage:            https://github.com/kmcallister/haskell-re2
+build-type:          Simple
+cabal-version:       >=1.6
+description:
+    FIXME
+
+extra-source-files:
+    README
+  , cbits/cre2.h
+
+library
+  exposed-modules:
+      Text.RE2.C
+    , Text.RE2.IO
+    , Text.RE2.Types
+  ghc-options:
+      -Wall
+  build-depends:
+      base       >= 3 && < 5
+    , bytestring >= 0.9
+
+  include-dirs:
+    cbits/
+  c-sources:
+    cbits/cre2.cpp
+  cc-options:
+    -Wall -O3
+
+  other-extensions:
+      ForeignFunctionInterface
+    , EmptyDataDecls
+
+source-repository head
+    type:     git
+    location: git://github.com/kmcallister/haskell-re2.git
