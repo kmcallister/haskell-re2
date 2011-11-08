@@ -62,7 +62,7 @@ instance Storable StringPiece where
 data CRE2
 
 foreign import ccall cre2_new
-    :: CString -> Ptr CRE2_Options -> IO (Ptr CRE2)
+    :: Ptr CChar -> CInt -> Ptr CRE2_Options -> IO (Ptr CRE2)
 foreign import ccall cre2_delete
     :: Ptr CRE2 -> IO ()
 foreign import ccall "&cre2_delete"

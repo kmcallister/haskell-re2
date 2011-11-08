@@ -33,7 +33,7 @@ struct string_piece {
 
 typedef void cre2;
 
-cre2 *cre2_new(const char *pattern, const cre2_options *opt);
+cre2 *cre2_new(const char *pattern, int patternlen, const cre2_options *opt);
 void cre2_delete(cre2 *re);
 
 int cre2_error_code(const cre2 *re);

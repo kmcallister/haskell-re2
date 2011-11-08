@@ -54,12 +54,6 @@ manage ptr = RE2 `fmap` newForeignPtr ptr_cre2_delete ptr
 withRE2 :: RE2 -> (Ptr CRE2 -> IO a) -> IO a
 withRE2 (RE2 re) = withForeignPtr re
 
-nullTerminate :: B.ByteString -> B.ByteString
-nullTerminate bs
-    | B.null bs       = B.pack [0]
-    | B.last bs == 0  = bs
-    | otherwise       = B.snoc bs 0
-
 getError :: CInt -> Ptr CRE2 -> IO Error
 getError ec re = alloca $ \sp -> do
     msg <- cre2_error_string re >>= peekCString
@@ -73,8 +67,8 @@ compile enc opts pattern = do
     copts <- cre2_opt_new
     setEncoding copts enc
     mapM_ (setOption copts) opts
-    re <- B.unsafeUseAsCString (nullTerminate pattern) $
-        flip cre2_new copts
+    re <- B.unsafeUseAsCStringLen pattern $ \(buf, len) -> do
+        cre2_new buf (fromIntegral len) copts
     cre2_opt_delete copts
 
     ec <- cre2_error_code re

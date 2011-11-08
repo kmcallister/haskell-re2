@@ -49,9 +49,10 @@ void cre2_opt_max_mem(cre2_options *opt, int m) {
 #define TO_RE2(re)       (reinterpret_cast<RE2 *>(re))
 #define TO_CONST_RE2(re) (reinterpret_cast<const RE2 *>(re))
 
-cre2 *cre2_new(const char *pattern, const cre2_options *opt) {
+cre2 *cre2_new(const char *pattern, int patternlen, const cre2_options *opt) {
+    re2::StringPiece pattern_re2(pattern, patternlen);
     return reinterpret_cast<void*>(
-        new RE2(pattern, *reinterpret_cast<const RE2::Options *>(opt)));
+        new RE2(pattern_re2, *reinterpret_cast<const RE2::Options *>(opt)));
 }
 
 void cre2_delete(cre2 *re) {
