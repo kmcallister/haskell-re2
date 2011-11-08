@@ -1,9 +1,14 @@
-FIXME
+This library provides a Haskell interface to the RE2 regular expression library,
+available from:
 
-Documentation is hosted at http://hackage.haskell.org/package/FIXME
+    http://code.google.com/p/re2/
 
-To build the documentation yourself, run
+It also implements a plain C API for a subset of RE2.  This wrapping layer
+could be useful on its own.
+
+
+To build the documentation, run
 
   $ cabal configure && cabal haddock --hyperlink-source
 
-This will produce HTML documentation under dist/doc/html/FIXME
+This will produce HTML documentation under dist/doc/html/re2

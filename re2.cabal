@@ -2,15 +2,23 @@ name:                re2
 version:             0.0
 license:             BSD3
 license-file:        LICENSE
-synopsis:            FIXME
-category:            FIXME
+synopsis:            Interface to the RE2 regex library
+category:            Text, Regex
 author:              Keegan McAllister <mcallister.keegan@gmail.com>
 maintainer:          Keegan McAllister <mcallister.keegan@gmail.com>
 homepage:            https://github.com/kmcallister/haskell-re2
 build-type:          Simple
 cabal-version:       >=1.6
 description:
-    FIXME
+    This library provides a Haskell interface to the RE2 regular expression library,
+    available from <http://code.google.com/p/re2/>.
+    .
+    RE2 is very fast, and is free of the exponential-time worst-case behavior common
+    to backtracking-based regex libraries.  RE2 implements most Perl\/PCRE regex
+    features, and also has a POSIX-compatible mode.
+    .
+    This package also implements a plain C API for a subset of RE2.  This wrapping
+    layer could be useful on its own.
 
 extra-source-files:
     README
