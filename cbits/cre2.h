@@ -25,27 +25,30 @@ void cre2_opt_encoding(cre2_options *opt, encoding_t enc);
 void cre2_opt_max_mem(cre2_options *opt, int m);
 
 
+struct string_piece {
+    const char *data;
+    int length;
+};
+
+
 typedef void cre2;
 
 cre2 *cre2_new(const char *pattern, const cre2_options *opt);
 void cre2_delete(cre2 *re);
 
 int cre2_error_code(const cre2 *re);
-char *cre2_error_string(const cre2 *re);  // must free() string
-char *cre2_error_arg(const cre2 *re);     // must free() string
 int cre2_num_capturing_groups(const cre2 *re);
 int cre2_program_size(const cre2 *re);
+
+// invalidated by further re use
+const char *cre2_error_string(const cre2 *re);
+void cre2_error_arg(const cre2 *re, struct string_piece *arg);
 
 
 typedef int anchor_t;
 #define CRE2_UNANCHORED   1
 #define CRE2_ANCHOR_START 2
 #define CRE2_ANCHOR_BOTH  3
-
-struct string_piece {
-    const char *data;
-    int length;
-};
 
 int cre2_match(
       const cre2 *re

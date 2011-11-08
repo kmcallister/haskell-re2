@@ -5,6 +5,7 @@ module Text.RE2.C where
 
 import Foreign
 import Foreign.C
+import Control.Monad
 
 #include <cre2.h>
 
@@ -44,6 +45,17 @@ foreign import ccall cre2_opt_encoding
     :: Ptr CRE2_Options -> Encoding_t -> IO ()
 
 
+data StringPiece
+
+sizeof_StringPiece :: Int
+sizeof_StringPiece = (#size struct string_piece)
+
+peek_StringPiece :: Ptr StringPiece -> IO CStringLen
+peek_StringPiece ptr = liftM2 (,)
+    ((#peek struct string_piece, data)   ptr)
+    ((#peek struct string_piece, length) ptr)
+
+
 data CRE2
 
 foreign import ccall cre2_new
@@ -56,7 +68,7 @@ foreign import ccall cre2_error_code
 foreign import ccall cre2_error_string
     :: Ptr CRE2 -> IO CString
 foreign import ccall cre2_error_arg
-    :: Ptr CRE2 -> IO CString
+    :: Ptr CRE2 -> Ptr StringPiece -> IO ()
 foreign import ccall cre2_num_capturing_groups
     :: Ptr CRE2 -> IO CInt
 foreign import ccall cre2_program_size
@@ -65,13 +77,6 @@ foreign import ccall cre2_program_size
 type Anchor_t = CInt
 #enum Anchor_t,, CRE2_UNANCHORED, CRE2_ANCHOR_START, CRE2_ANCHOR_BOTH
 
-data StringPiece
-
-sp_get_data :: Ptr StringPiece -> IO CString
-sp_get_data = (#peek struct string_piece, data)
-
-sp_get_length :: Ptr StringPiece -> IO CInt
-sp_get_length = (#peek struct string_piece, length)
 
 foreign import ccall cre2_match
     :: Ptr CRE2

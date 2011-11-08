@@ -1,5 +1,3 @@
-#include <string>
-
 #include <re2/re2.h>
 #include "cre2.h"
 
@@ -65,12 +63,14 @@ int cre2_error_code(const cre2 *re) {
     return int(TO_CONST_RE2(re)->error_code());
 }
 
-char *cre2_error_string(const cre2 *re) {
-    return strdup(TO_CONST_RE2(re)->error().c_str());
+const char *cre2_error_string(const cre2 *re) {
+    return TO_CONST_RE2(re)->error().c_str();
 }
 
-char *cre2_error_arg(const cre2 *re) {
-    return strdup(TO_CONST_RE2(re)->error_arg().c_str());
+void cre2_error_arg(const cre2 *re, struct string_piece *arg) {
+    const std::string &argstr = TO_CONST_RE2(re)->error_arg();
+    arg->data   = argstr.data();
+    arg->length = argstr.length();
 }
 
 int cre2_num_capturing_groups(const cre2 *re) {
