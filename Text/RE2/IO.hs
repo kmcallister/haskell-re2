@@ -5,7 +5,6 @@ module Text.RE2.IO
     , compile
     , match
     , stats
-    , module Text.RE2.Types
     ) where
 
 import Text.RE2.C

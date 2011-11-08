@@ -19,8 +19,10 @@ extra-source-files:
 library
   exposed-modules:
       Text.RE2.C
-    , Text.RE2.IO
     , Text.RE2.Types
+    , Text.RE2.ByteString
+  other-modules:
+      Text.RE2.IO
   ghc-options:
       -Wall
   build-depends:
