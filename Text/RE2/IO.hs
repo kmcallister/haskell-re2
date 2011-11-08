@@ -70,6 +70,8 @@ compile enc opts pattern = do
     re <- B.unsafeUseAsCStringLen pattern $ \(buf, len) -> do
         cre2_new buf (fromIntegral len) copts
     cre2_opt_delete copts
+    -- re2 copies pattern and options, so we do not need to hold onto
+    -- these structures.
 
     ec <- cre2_error_code re
     if ec == 0
@@ -78,13 +80,6 @@ compile enc opts pattern = do
             err <- getError ec re
             cre2_delete re
             return (Left err)
-
--- re2 copies pattern and options, so we do not need to hold onto
--- these structures.
---
--- FIXME: document null termination behavior
---
--- FIXME: finalizer
 
 stats :: RE2 -> IO Stats
 stats re = withRE2 re $ \p -> do
