@@ -24,10 +24,16 @@ import System.IO.Unsafe ( unsafePerformIO )
 --   * re2.h asserts that multi-threaded use is OK
 
 -- | Compile a regex, given as a @'B.ByteString'@.
-compile :: [CompileOption] -> B.ByteString -> Either Error RE2
-compile opts bs = unsafePerformIO (I.compile opts bs)
+--
+-- The specified character encoding is used to interpret the regex and any
+-- subsequent input to @'match'@.
+compile :: Encoding -> [CompileOption] -> B.ByteString -> Either Error RE2
+compile enc opts bs = unsafePerformIO (I.compile enc opts bs)
 
 -- | Match a compiled regex against the given @'B.ByteString'@.
+--
+-- The input is interpreted according to the character encoding
+-- which was passed to @'compile'@.
 match :: MatchOptions -> RE2 -> B.ByteString -> Maybe (Match B.ByteString)
 match opts re bs = unsafePerformIO (I.match opts re bs)
 

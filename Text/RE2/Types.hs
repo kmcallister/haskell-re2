@@ -27,6 +27,8 @@ import Data.ByteString ( ByteString )
 import Data.Data ( Typeable, Data )
 
 -- | Character encodings supported by RE2.
+--
+-- When passing a raw @'ByteString'@, we need to specify an encoding.
 data Encoding
     = UTF8
     | Latin1
@@ -51,11 +53,6 @@ data CompileOption
     | WordBoundary  Bool  -- ^ Allow Perl's @\\b \\B@ even in POSIX mode.
     | OneLine       Bool  -- ^ Match @^@ and @$@ only at beginning and end of text even in POSIX mode.
     | MaxMemory     Int   -- ^ Memory limit, in bytes.
-
-      -- | Specify the character encoding, when providing @'ByteString'@s.  It
-      -- is an error to pass this option to functions that take Unicode text
-      -- types (@'String'@ or @'Text'@).
-    | Encoding      Encoding
     deriving (Eq, Ord, Show, Read, Typeable, Data)
 
 -- | An error which occurred while compiling a regex.

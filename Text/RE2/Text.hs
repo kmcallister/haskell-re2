@@ -11,7 +11,6 @@ module Text.RE2.Text
     ) where
 
 import Text.RE2.Types
-import Text.RE2.Internal   ( forceUTF8  )
 import Text.RE2.ByteString ( RE2, stats )
 import qualified Text.RE2.ByteString as B
 
@@ -20,9 +19,7 @@ import qualified Data.Text.Encoding as T
 
 -- | Compile a regex, given as a @'T.Text'@.
 compile :: [CompileOption] -> T.Text -> Either Error RE2
-compile opts txt = do
-    newopts <- forceUTF8 "Text.RE2.Text.compile" opts
-    B.compile newopts (T.encodeUtf8 txt)
+compile opts txt = B.compile UTF8 opts (T.encodeUtf8 txt)
 
 -- | Match a compiled regex against the given @'T.Text'@.
 match :: MatchOptions -> RE2 -> T.Text -> Maybe (Match T.Text)

@@ -34,11 +34,14 @@ setOption opt = go where
     go (WordBoundary  b) = goBool b cre2_opt_word_boundary
     go (OneLine       b) = goBool b cre2_opt_one_line
     go (MaxMemory     n) = cre2_opt_max_mem  opt (fromIntegral n)
-    go (Encoding   UTF8) = cre2_opt_encoding opt cre2Utf8
-    go (Encoding Latin1) = cre2_opt_encoding opt cre2Latin1
 
     goBool True  f = f opt 1
     goBool False f = f opt 0
+
+setEncoding :: Ptr CRE2_Options -> Encoding -> IO ()
+setEncoding opt = go where
+    go UTF8   = cre2_opt_encoding opt cre2Utf8
+    go Latin1 = cre2_opt_encoding opt cre2Latin1
 
 
 -- | Abstract type representing a compiled regex.
@@ -65,9 +68,10 @@ getError ec re = alloca $ \sp -> do
     arg <- B.packCStringLen (argdat, fromIntegral arglen)
     return (Error (Just $ fromIntegral ec) msg arg)
 
-compile :: [CompileOption] -> B.ByteString -> IO (Either Error RE2)
-compile opts pattern = do
+compile :: Encoding -> [CompileOption] -> B.ByteString -> IO (Either Error RE2)
+compile enc opts pattern = do
     copts <- cre2_opt_new
+    setEncoding copts enc
     mapM_ (setOption copts) opts
     re <- B.unsafeUseAsCString (nullTerminate pattern) $
         flip cre2_new copts
