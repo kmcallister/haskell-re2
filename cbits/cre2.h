@@ -5,10 +5,9 @@ extern "C" {
 
 typedef void cre2_options;
 
-enum Encoding {
-    EncodingUTF8 = 1,
-    EncodingLatin1
-};
+typedef int encoding_t;
+#define CRE2_UTF8   1
+#define CRE2_Latin1 2
 
 cre2_options *cre2_opt_new(void);
 void cre2_opt_delete(cre2_options *opt);
@@ -22,7 +21,7 @@ void cre2_opt_case_sensitive(cre2_options *opt, int flag);
 void cre2_opt_perl_classes(cre2_options *opt, int flag);
 void cre2_opt_word_boundary(cre2_options *opt, int flag);
 void cre2_opt_one_line(cre2_options *opt, int flag);
-void cre2_opt_encoding(cre2_options *opt, enum Encoding enc);
+void cre2_opt_encoding(cre2_options *opt, encoding_t enc);
 void cre2_opt_max_mem(cre2_options *opt, int m);
 
 
@@ -38,11 +37,10 @@ int cre2_num_capturing_groups(const cre2 *re);
 int cre2_program_size(const cre2 *re);
 
 
-enum Anchor {
-    UNANCHORED,
-    ANCHOR_START,
-    ANCHOR_BOTH
-};
+typedef int anchor_t;
+#define CRE2_UNANCHORED   1
+#define CRE2_ANCHOR_START 2
+#define CRE2_ANCHOR_BOTH  3
 
 struct string_piece {
     const char *data;
@@ -54,7 +52,7 @@ int cre2_match(
     , const char *text
     , int startpos
     , int endpos
-    , enum Anchor anchor
+    , anchor_t anchor
     , struct string_piece *match
     , int nmatch);
 

@@ -32,12 +32,12 @@ OPT_bool(one_line)
 #undef OPT_BOOL
 
 
-void cre2_opt_encoding(cre2_options *opt, enum Encoding enc) {
+void cre2_opt_encoding(cre2_options *opt, encoding_t enc) {
     switch (enc) {
-        case EncodingUTF8:
+        case CRE2_UTF8:
             TO_OPT(opt)->set_encoding(RE2::Options::EncodingUTF8);
             break;
-        case EncodingLatin1:
+        case CRE2_Latin1:
             TO_OPT(opt)->set_encoding(RE2::Options::EncodingLatin1);
             break;
     }
@@ -87,7 +87,7 @@ int cre2_match(
   , const char *text
   , int startpos
   , int endpos
-  , enum Anchor anchor
+  , anchor_t anchor
   , struct string_piece *match
   , int nmatch) {
 
@@ -96,11 +96,11 @@ int cre2_match(
 
     RE2::Anchor anchor_re2;
     switch (anchor) {
-        case UNANCHORED:
+        case CRE2_UNANCHORED:
             anchor_re2 = RE2::UNANCHORED;   break;
-        case ANCHOR_START:
+        case CRE2_ANCHOR_START:
             anchor_re2 = RE2::ANCHOR_START; break;
-        case ANCHOR_BOTH:
+        case CRE2_ANCHOR_BOTH:
             anchor_re2 = RE2::ANCHOR_BOTH;  break;
     }
 
