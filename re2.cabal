@@ -22,16 +22,18 @@ library
     , Text.RE2.Types
     , Text.RE2.ByteString
     , Text.RE2.Text
+    , Text.RE2.String
   other-modules:
       Text.RE2.IO
     , Text.RE2.Internal
   ghc-options:
       -Wall
   build-depends:
-      base       >= 3 && < 5
-    , bytestring >= 0.9
-    , containers >= 0.4
-    , text       >= 0.11
+      base        >= 3 && < 5
+    , bytestring  >= 0.9
+    , containers  >= 0.4
+    , text        >= 0.11
+    , utf8-string >= 0.3
 
   include-dirs:
     cbits/
