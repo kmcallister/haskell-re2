@@ -21,6 +21,7 @@ library
       Text.RE2.C
     , Text.RE2.Types
     , Text.RE2.ByteString
+    , Text.RE2.Text
   other-modules:
       Text.RE2.IO
   ghc-options:
@@ -29,6 +30,7 @@ library
       base       >= 3 && < 5
     , bytestring >= 0.9
     , containers >= 0.4
+    , text       >= 0.11
 
   include-dirs:
     cbits/
