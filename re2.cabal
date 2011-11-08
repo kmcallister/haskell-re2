@@ -26,6 +26,7 @@ library
   build-depends:
       base       >= 3 && < 5
     , bytestring >= 0.9
+    , containers >= 0.4
 
   include-dirs:
     cbits/

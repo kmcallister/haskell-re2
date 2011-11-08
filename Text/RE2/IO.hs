@@ -3,6 +3,7 @@
 module Text.RE2.IO
     ( RE2
     , compile
+    , match
     , numCapturingGroups
     , programSize
     , module Text.RE2.Types
@@ -13,9 +14,12 @@ import Text.RE2.Types
 
 import Foreign
 import Foreign.C
+import Control.Exception
+import Control.Monad
 
 import qualified Data.ByteString        as B
 import qualified Data.ByteString.Unsafe as B
+import qualified Data.Sequence          as S
 
 import Data.Data ( Typeable )
 
@@ -81,3 +85,41 @@ numCapturingGroups (RE2 p) = fromIntegral `fmap` cre2_num_capturing_groups p
 
 programSize :: RE2 -> IO Int
 programSize (RE2 p) = fromIntegral `fmap` cre2_program_size p
+
+getAnch :: Anchor -> Anchor_t
+getAnch Unanchored  = cre2Unanchored
+getAnch AnchorStart = cre2AnchorStart
+getAnch AnchorBoth  = cre2AnchorBoth
+
+match :: MatchOptions -> RE2 -> B.ByteString -> IO (Result B.ByteString)
+match mo re@(RE2 rep) bs = do
+    nmatches <- case moNumGroups mo of
+        Just n  -> return n
+        Nothing -> (+1) `fmap` numCapturingGroups re
+    allocaArray nmatches $ \arr ->
+      B.unsafeUseAsCStringLen bs $ \(buf, len) -> do
+        let clen = fromIntegral len
+            cnmatches = fromIntegral nmatches
+            anch = getAnch (moAnchor mo)
+        ret <- cre2_match rep buf clen 0 clen anch arr cnmatches
+        case ret of
+            0 -> return NoMatch
+            _ -> do
+                pieces  <- peekArray nmatches arr
+                matches <- mapM (getMatch bs buf) pieces
+                return (Match (S.fromList matches))
+
+getMatch
+    :: B.ByteString
+    -> Ptr CChar
+    -> StringPiece
+    -> IO (Maybe (Group B.ByteString))
+getMatch inpt inpt_ptr (StringPiece ptr clen)
+    | ptr == nullPtr  = return Nothing
+    | otherwise = do
+        let off = ptr `minusPtr` inpt_ptr
+        when (off < 0) $
+            throwIO (ErrorCall "Text.RE2: negative-offset matching group")
+        let len = fromIntegral clen
+            bs  = B.take len (B.drop off inpt)
+        return (Just $ Group off len bs)
