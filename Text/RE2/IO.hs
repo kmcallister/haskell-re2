@@ -62,7 +62,7 @@ getError ec re = alloca $ \sp -> do
     cre2_error_arg re sp
     StringPiece argdat arglen <- peek sp
     arg <- B.packCStringLen (argdat, fromIntegral arglen)
-    return (Error (fromIntegral ec) msg arg)
+    return (Error (Just $ fromIntegral ec) msg arg)
 
 compile :: [Option] -> B.ByteString -> IO (Either Error RE2)
 compile opts pattern = do

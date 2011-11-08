@@ -37,7 +37,7 @@ data Option
     deriving (Eq, Ord, Show, Read, Typeable, Data)
 
 data Error = Error
-    { errCode     :: Int
+    { errCode     :: Maybe Int
     , errMessage  :: String
     , errFragment :: B.ByteString
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
