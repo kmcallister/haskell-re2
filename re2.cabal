@@ -24,6 +24,7 @@ library
     , Text.RE2.Text
   other-modules:
       Text.RE2.IO
+    , Text.RE2.Internal
   ghc-options:
       -Wall
   build-depends:
