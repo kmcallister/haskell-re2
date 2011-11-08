@@ -9,6 +9,7 @@ import Control.Monad
 
 #include <cre2.h>
 
+#let alignment t = "%lu", (unsigned long)offsetof(struct {char x__; t (y__); }, y__)
 
 data CRE2_Options
 
@@ -45,15 +46,17 @@ foreign import ccall cre2_opt_encoding
     :: Ptr CRE2_Options -> Encoding_t -> IO ()
 
 
-data StringPiece
+data StringPiece = StringPiece CString CInt
 
-sizeof_StringPiece :: Int
-sizeof_StringPiece = (#size struct string_piece)
-
-peek_StringPiece :: Ptr StringPiece -> IO (CString, CInt)
-peek_StringPiece ptr = liftM2 (,)
-    ((#peek struct string_piece, data)   ptr)
-    ((#peek struct string_piece, length) ptr)
+instance Storable StringPiece where
+    alignment _ = #{alignment struct string_piece}
+    sizeOf    _ = #{size      struct string_piece}
+    peek ptr = liftM2 StringPiece
+        (#{peek struct string_piece, data}   ptr)
+        (#{peek struct string_piece, length} ptr)
+    poke ptr (StringPiece dat len) = do
+        #{poke struct string_piece, data}   ptr dat
+        #{poke struct string_piece, length} ptr len
 
 
 data CRE2

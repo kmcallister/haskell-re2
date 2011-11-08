@@ -49,10 +49,10 @@ nullTerminate bs
     | otherwise       = B.snoc bs 0
 
 getError :: CInt -> Ptr CRE2 -> IO Error
-getError ec re = allocaBytes sizeof_StringPiece $ \sp -> do
+getError ec re = alloca $ \sp -> do
     msg <- cre2_error_string re >>= peekCString
     cre2_error_arg re sp
-    (argdat, arglen) <- peek_StringPiece sp
+    StringPiece argdat arglen <- peek sp
     arg <- B.packCStringLen (argdat, fromIntegral arglen)
     return (Error (fromIntegral ec) msg arg)
 
