@@ -19,7 +19,7 @@ import System.IO.Unsafe ( unsafePerformIO )
 --   * 'match' and 'stats' invoke const C++ methods
 --   * re2.h asserts that multi-threaded use is OK
 
-compile :: [Option] -> B.ByteString -> Either Error RE2
+compile :: [CompileOption] -> B.ByteString -> Either Error RE2
 compile opts bs = unsafePerformIO (I.compile opts bs)
 
 match :: MatchOptions -> RE2 -> B.ByteString -> Maybe (Match B.ByteString)

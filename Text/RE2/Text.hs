@@ -14,7 +14,7 @@ import qualified Text.RE2.ByteString as B
 import qualified Data.Text          as T
 import qualified Data.Text.Encoding as T
 
-compile :: [Option] -> T.Text -> Either Error RE2
+compile :: [CompileOption] -> T.Text -> Either Error RE2
 compile opts txt = do
     newopts <- forceUTF8 "Text.RE2.Text.compile" opts
     B.compile newopts (T.encodeUtf8 txt)

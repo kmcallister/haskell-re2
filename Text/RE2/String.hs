@@ -13,7 +13,7 @@ import qualified Text.RE2.ByteString as B
 
 import qualified Data.ByteString.UTF8 as U
 
-compile :: [Option] -> String -> Either Error RE2
+compile :: [CompileOption] -> String -> Either Error RE2
 compile opts str = do
     newopts <- forceUTF8 "Text.RE2.String.compile" opts
     B.compile newopts (U.fromString str)

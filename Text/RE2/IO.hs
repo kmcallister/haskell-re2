@@ -22,7 +22,7 @@ import qualified Data.Sequence          as S
 import Data.Data ( Typeable )
 
 
-setOption :: Ptr CRE2_Options -> Option -> IO ()
+setOption :: Ptr CRE2_Options -> CompileOption -> IO ()
 setOption opt = go where
     go (PosixSyntax   b) = goBool b cre2_opt_posix_syntax
     go (LongestMatch  b) = goBool b cre2_opt_longest_match
@@ -64,7 +64,7 @@ getError ec re = alloca $ \sp -> do
     arg <- B.packCStringLen (argdat, fromIntegral arglen)
     return (Error (Just $ fromIntegral ec) msg arg)
 
-compile :: [Option] -> B.ByteString -> IO (Either Error RE2)
+compile :: [CompileOption] -> B.ByteString -> IO (Either Error RE2)
 compile opts pattern = do
     copts <- cre2_opt_new
     mapM_ (setOption copts) opts

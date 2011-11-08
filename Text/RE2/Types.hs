@@ -1,7 +1,7 @@
 {-# LANGUAGE
     DeriveDataTypeable #-}
 module Text.RE2.Types
-    ( Option(..)
+    ( CompileOption(..)
     , Encoding(..)
     , Error(..)
     , Match(..)
@@ -22,7 +22,7 @@ data Encoding
     | Latin1
     deriving (Eq, Ord, Show, Read, Typeable, Data, Enum, Bounded)
 
-data Option
+data CompileOption
     = PosixSyntax   Bool
     | LongestMatch  Bool
     | LogErrors     Bool
