@@ -64,10 +64,17 @@ data Group str = Group
     , grString     :: str
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
 
+instance Functor Group where
+    fmap f gr = gr { grString = f (grString gr) }
+
 data Result str =
       NoMatch
     | Match (S.Seq (Maybe (Group str)))
     deriving (Eq, Ord, Show, Read, Typeable, Data)
+
+instance Functor Result where
+    fmap _ NoMatch    = NoMatch
+    fmap f (Match xs) = Match (fmap (fmap (fmap f)) xs)
 
 data Stats = Stats
     { stNumCapturingGroups :: Int
