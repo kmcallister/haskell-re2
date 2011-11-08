@@ -4,8 +4,7 @@ module Text.RE2.IO
     ( RE2
     , compile
     , match
-    , numCapturingGroups
-    , programSize
+    , stats
     , module Text.RE2.Types
     ) where
 
@@ -80,11 +79,11 @@ compile opts pattern = do
 --
 -- FIXME: finalizer
 
-numCapturingGroups :: RE2 -> IO Int
-numCapturingGroups (RE2 p) = fromIntegral `fmap` cre2_num_capturing_groups p
-
-programSize :: RE2 -> IO Int
-programSize (RE2 p) = fromIntegral `fmap` cre2_program_size p
+stats :: RE2 -> IO Stats
+stats (RE2 p) = do
+    ncg <- cre2_num_capturing_groups p
+    pgs <- cre2_program_size p
+    return (Stats (fromIntegral ncg) (fromIntegral pgs))
 
 getAnch :: Anchor -> Anchor_t
 getAnch Unanchored  = cre2Unanchored
@@ -92,10 +91,10 @@ getAnch AnchorStart = cre2AnchorStart
 getAnch AnchorBoth  = cre2AnchorBoth
 
 match :: MatchOptions -> RE2 -> B.ByteString -> IO (Result B.ByteString)
-match mo re@(RE2 rep) bs = do
+match mo (RE2 rep) bs = do
     nmatches <- case moNumGroups mo of
         Just n  -> return n
-        Nothing -> (+1) `fmap` numCapturingGroups re
+        Nothing -> ((+1) . fromIntegral) `fmap` cre2_num_capturing_groups rep
     allocaArray nmatches $ \arr ->
       B.unsafeUseAsCStringLen bs $ \(buf, len) -> do
         let clen = fromIntegral len

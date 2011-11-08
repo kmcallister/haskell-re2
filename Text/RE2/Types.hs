@@ -5,6 +5,7 @@ module Text.RE2.Types
     , Encoding(..)
     , Error(..)
     , Result(..)
+    , Stats(..)
     , MatchOptions(..)
     , defMatchOptions
     , Anchor(..)
@@ -67,3 +68,8 @@ data Result str =
       NoMatch
     | Match (S.Seq (Maybe (Group str)))
     deriving (Eq, Ord, Show, Read, Typeable, Data)
+
+data Stats = Stats
+    { stNumCapturingGroups :: Int
+    , stProgramSize        :: Int
+    } deriving (Eq, Ord, Show, Read, Typeable, Data)
