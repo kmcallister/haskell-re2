@@ -85,12 +85,14 @@ int cre2_program_size(const cre2 *re) {
 int cre2_match(
     const cre2 *re
   , const char *text
+  , int textlen
   , int startpos
   , int endpos
   , anchor_t anchor
   , struct string_piece *match
   , int nmatch) {
 
+    re2::StringPiece text_re2(text, textlen);
     // FIXME: exceptions?
     re2::StringPiece *match_re2 = new re2::StringPiece[nmatch];
 
@@ -103,7 +105,7 @@ int cre2_match(
     }
 
     bool ret = TO_CONST_RE2(re)
-        ->Match(text, startpos, endpos, anchor_re2, match_re2, nmatch);
+        ->Match(text_re2, startpos, endpos, anchor_re2, match_re2, nmatch);
 
     if (ret) {
         for (int i=0; i<nmatch; i++) {

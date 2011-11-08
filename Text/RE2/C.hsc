@@ -83,7 +83,8 @@ type Anchor_t = CInt
 
 foreign import ccall cre2_match
     :: Ptr CRE2
-    -> CString
+    -> Ptr CChar
+    -> CInt
     -> CInt
     -> CInt
     -> Anchor_t

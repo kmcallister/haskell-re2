@@ -53,6 +53,7 @@ typedef int anchor_t;
 int cre2_match(
       const cre2 *re
     , const char *text
+    , int textlen
     , int startpos
     , int endpos
     , anchor_t anchor
