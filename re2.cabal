@@ -34,6 +34,9 @@ library
     , containers  >= 0.4
     , text        >= 0.11
     , utf8-string >= 0.3
+  other-extensions:
+      ForeignFunctionInterface
+    , EmptyDataDecls
 
   include-dirs:
     cbits/
@@ -41,10 +44,8 @@ library
     cbits/cre2.cpp
   cc-options:
     -Wall -O3
-
-  other-extensions:
-      ForeignFunctionInterface
-    , EmptyDataDecls
+  extra-libraries:
+    re2
 
 source-repository head
     type:     git
