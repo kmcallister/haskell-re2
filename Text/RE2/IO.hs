@@ -50,7 +50,8 @@ getError :: CInt -> Ptr CRE2 -> IO Error
 getError ec re = allocaBytes sizeof_StringPiece $ \sp -> do
     msg <- cre2_error_string re >>= peekCString
     cre2_error_arg re sp
-    arg <- peek_StringPiece sp >>= B.packCStringLen
+    (argdat, arglen) <- peek_StringPiece sp
+    arg <- B.packCStringLen (argdat, fromIntegral arglen)
     return (Error (fromIntegral ec) msg arg)
 
 compile :: [Option] -> B.ByteString -> IO (Either Error RE2)

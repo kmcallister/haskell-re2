@@ -50,7 +50,7 @@ data StringPiece
 sizeof_StringPiece :: Int
 sizeof_StringPiece = (#size struct string_piece)
 
-peek_StringPiece :: Ptr StringPiece -> IO CStringLen
+peek_StringPiece :: Ptr StringPiece -> IO (CString, CInt)
 peek_StringPiece ptr = liftM2 (,)
     ((#peek struct string_piece, data)   ptr)
     ((#peek struct string_piece, length) ptr)
