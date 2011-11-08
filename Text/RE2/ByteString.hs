@@ -1,7 +1,11 @@
+-- | Regex matching for @'B.ByteString'@s.
 module Text.RE2.ByteString
-    ( RE2
-    , compile
+    ( -- * Regex matching
+      compile
     , match
+
+      -- * Types
+    , RE2
     , stats
     , module Text.RE2.Types
     ) where
@@ -19,11 +23,14 @@ import System.IO.Unsafe ( unsafePerformIO )
 --   * 'match' and 'stats' invoke const C++ methods
 --   * re2.h asserts that multi-threaded use is OK
 
+-- | Compile a regex, given as a @'B.ByteString'@.
 compile :: [CompileOption] -> B.ByteString -> Either Error RE2
 compile opts bs = unsafePerformIO (I.compile opts bs)
 
+-- | Match a compiled regex against the given @'B.ByteString'@.
 match :: MatchOptions -> RE2 -> B.ByteString -> Maybe (Match B.ByteString)
 match opts re bs = unsafePerformIO (I.match opts re bs)
 
+-- | Get some statistics about a regex.
 stats :: RE2 -> Stats
 stats re = unsafePerformIO (I.stats re)

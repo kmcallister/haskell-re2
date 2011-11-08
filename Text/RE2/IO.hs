@@ -41,6 +41,7 @@ setOption opt = go where
     goBool False f = f opt 0
 
 
+-- | Abstract type representing a compiled regex.
 newtype RE2 = RE2 (ForeignPtr CRE2)
     deriving (Typeable)
 
