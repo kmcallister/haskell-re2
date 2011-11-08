@@ -94,10 +94,8 @@ int cre2_match(
     // FIXME: exceptions?
     re2::StringPiece *match_re2 = new re2::StringPiece[nmatch];
 
-    RE2::Anchor anchor_re2;
+    RE2::Anchor anchor_re2 = RE2::UNANCHORED;
     switch (anchor) {
-        case CRE2_UNANCHORED:
-            anchor_re2 = RE2::UNANCHORED;   break;
         case CRE2_ANCHOR_START:
             anchor_re2 = RE2::ANCHOR_START; break;
         case CRE2_ANCHOR_BOTH:
