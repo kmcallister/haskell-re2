@@ -4,7 +4,7 @@ module Text.RE2.Types
     ( Option(..)
     , Encoding(..)
     , Error(..)
-    , Result(..)
+    , Match(..)
     , Stats(..)
     , MatchOptions(..)
     , defMatchOptions
@@ -67,13 +67,10 @@ data Group str = Group
 instance Functor Group where
     fmap f gr = gr { grString = f (grString gr) }
 
-data Result str =
-      NoMatch
-    | Match (S.Seq (Maybe (Group str)))
+newtype Match str = Match (S.Seq (Maybe (Group str)))
     deriving (Eq, Ord, Show, Read, Typeable, Data)
 
-instance Functor Result where
-    fmap _ NoMatch    = NoMatch
+instance Functor Match where
     fmap f (Match xs) = Match (fmap (fmap (fmap f)) xs)
 
 data Stats = Stats

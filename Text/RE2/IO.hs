@@ -98,7 +98,7 @@ getAnch Unanchored  = cre2Unanchored
 getAnch AnchorStart = cre2AnchorStart
 getAnch AnchorBoth  = cre2AnchorBoth
 
-match :: MatchOptions -> RE2 -> B.ByteString -> IO (Result B.ByteString)
+match :: MatchOptions -> RE2 -> B.ByteString -> IO (Maybe (Match B.ByteString))
 match mo re bs = withRE2 re $ \rep -> do
     nmatches <- case moNumGroups mo of
         Just n  -> return n
@@ -110,11 +110,11 @@ match mo re bs = withRE2 re $ \rep -> do
             anch = getAnch (moAnchor mo)
         ret <- cre2_match rep buf clen 0 clen anch arr cnmatches
         case ret of
-            0 -> return NoMatch
+            0 -> return Nothing
             _ -> do
                 pieces  <- peekArray nmatches arr
                 matches <- mapM (getMatch bs buf) pieces
-                return (Match (S.fromList matches))
+                return (Just . Match $ S.fromList matches)
 
 getMatch
     :: B.ByteString

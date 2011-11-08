@@ -22,7 +22,7 @@ import System.IO.Unsafe ( unsafePerformIO )
 compile :: [Option] -> B.ByteString -> Either Error RE2
 compile opts bs = unsafePerformIO (I.compile opts bs)
 
-match :: MatchOptions -> RE2 -> B.ByteString -> Result B.ByteString
+match :: MatchOptions -> RE2 -> B.ByteString -> Maybe (Match B.ByteString)
 match opts re bs = unsafePerformIO (I.match opts re bs)
 
 stats :: RE2 -> Stats
