@@ -41,8 +41,14 @@ setOption opt = go where
     goBool False f = f opt 0
 
 
-newtype RE2 = RE2 (Ptr CRE2)
+newtype RE2 = RE2 (ForeignPtr CRE2)
     deriving (Typeable)
+
+manage :: Ptr CRE2 -> IO RE2
+manage ptr = RE2 `fmap` newForeignPtr ptr_cre2_delete ptr
+
+withRE2 :: RE2 -> (Ptr CRE2 -> IO a) -> IO a
+withRE2 (RE2 re) = withForeignPtr re
 
 nullTerminate :: B.ByteString -> B.ByteString
 nullTerminate bs
@@ -68,8 +74,11 @@ compile opts pattern = do
 
     ec <- cre2_error_code re
     if ec == 0
-        then return (Right $ RE2 re)
-        else Left `fmap` getError ec re
+        then Right `fmap` manage re
+        else do
+            err <- getError ec re
+            cre2_delete re
+            return (Left err)
 
 -- re2 copies pattern and options, so we do not need to hold onto
 -- these structures.
@@ -79,7 +88,7 @@ compile opts pattern = do
 -- FIXME: finalizer
 
 stats :: RE2 -> IO Stats
-stats (RE2 p) = do
+stats re = withRE2 re $ \p -> do
     ncg <- cre2_num_capturing_groups p
     pgs <- cre2_program_size p
     return (Stats (fromIntegral ncg) (fromIntegral pgs))
@@ -90,7 +99,7 @@ getAnch AnchorStart = cre2AnchorStart
 getAnch AnchorBoth  = cre2AnchorBoth
 
 match :: MatchOptions -> RE2 -> B.ByteString -> IO (Result B.ByteString)
-match mo (RE2 rep) bs = do
+match mo re bs = withRE2 re $ \rep -> do
     nmatches <- case moNumGroups mo of
         Just n  -> return n
         Nothing -> ((+1) . fromIntegral) `fmap` cre2_num_capturing_groups rep

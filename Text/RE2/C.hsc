@@ -65,6 +65,8 @@ foreign import ccall cre2_new
     :: CString -> Ptr CRE2_Options -> IO (Ptr CRE2)
 foreign import ccall cre2_delete
     :: Ptr CRE2 -> IO ()
+foreign import ccall "&cre2_delete"
+    ptr_cre2_delete :: FunPtr (Ptr CRE2 -> IO ())
 
 foreign import ccall cre2_error_code
     :: Ptr CRE2 -> IO CInt
