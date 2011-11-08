@@ -3,6 +3,8 @@
 module Text.RE2.IO
     ( RE2
     , compile
+    , numCapturingGroups
+    , programSize
     , module Text.RE2.Types
     ) where
 
@@ -73,3 +75,9 @@ compile opts pattern = do
 -- FIXME: document null termination behavior
 --
 -- FIXME: finalizer
+
+numCapturingGroups :: RE2 -> IO Int
+numCapturingGroups (RE2 p) = fromIntegral `fmap` cre2_num_capturing_groups p
+
+programSize :: RE2 -> IO Int
+programSize (RE2 p) = fromIntegral `fmap` cre2_program_size p
