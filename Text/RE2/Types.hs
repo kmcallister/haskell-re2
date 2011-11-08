@@ -1,5 +1,7 @@
 {-# LANGUAGE
     DeriveDataTypeable #-}
+{-# OPTIONS_GHC
+    -fno-warn-unused-imports #-}
 -- | Types used in compiling and matching regexes.
 module Text.RE2.Types
     ( -- * Compile options
