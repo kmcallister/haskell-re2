@@ -44,6 +44,7 @@ library
   other-extensions:
       ForeignFunctionInterface
     , EmptyDataDecls
+    , DeriveDataTypeable
 
   include-dirs:
     cbits/
