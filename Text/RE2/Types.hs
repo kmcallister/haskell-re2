@@ -1,12 +1,13 @@
 {-# LANGUAGE
-    DeriveDataTypeable #-}
+    DeriveDataTypeable
+  , EmptyDataDecls #-}
 {-# OPTIONS_GHC
     -fno-warn-unused-imports #-}
 -- | Types used in compiling and matching regexes.
 module Text.RE2.Types
     ( -- * Compile options
       CompileOption(..)
-    , Encoding(..)
+    , UTF8, Latin1
 
       -- * Match options
     , MatchOptions(..)
@@ -28,13 +29,13 @@ import Data.ByteString ( ByteString )
 
 import Data.Data ( Typeable, Data )
 
--- | Character encodings supported by RE2.
---
--- When passing a raw @'ByteString'@, we need to specify an encoding.
-data Encoding
-    = UTF8
-    | Latin1
-    deriving (Eq, Ord, Show, Read, Typeable, Data, Enum, Bounded)
+-- | Tag type denoting a regex which operates on UTF8-encoded text.
+data UTF8
+    deriving (Typeable)
+
+-- | Tag type denoting a regex which operates on Latin1-encoded text.
+data Latin1
+    deriving (Typeable)
 
 -- | Options available when compiling a regex.
 --

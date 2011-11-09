@@ -5,10 +5,11 @@ module Text.RE2.IO
     , compile
     , match
     , stats
+    , Encoding(..)
     ) where
 
 import Text.RE2.C
-import Text.RE2.Types
+import Text.RE2.Types as Ty
 
 import Foreign
 import Foreign.C
@@ -38,6 +39,11 @@ setOption opt = go where
     goBool True  f = f opt 1
     goBool False f = f opt 0
 
+-- for internal use only
+data Encoding
+    = UTF8
+    | Latin1
+
 setEncoding :: Ptr CRE2_Options -> Encoding -> IO ()
 setEncoding opt = go where
     go UTF8   = cre2_opt_encoding opt cre2Utf8
@@ -45,13 +51,16 @@ setEncoding opt = go where
 
 
 -- | Abstract type representing a compiled regex.
-newtype RE2 = RE2 (ForeignPtr CRE2)
+--
+-- Parametrized by a character encoding, either @'Ty.UTF8'@
+-- or @'Ty.Latin1'@.
+newtype RE2 enc = RE2 (ForeignPtr CRE2)
     deriving (Typeable)
 
-manage :: Ptr CRE2 -> IO RE2
+manage :: Ptr CRE2 -> IO (RE2 enc)
 manage ptr = RE2 `fmap` newForeignPtr ptr_cre2_delete ptr
 
-withRE2 :: RE2 -> (Ptr CRE2 -> IO a) -> IO a
+withRE2 :: RE2 enc -> (Ptr CRE2 -> IO a) -> IO a
 withRE2 (RE2 re) = withForeignPtr re
 
 getError :: CInt -> Ptr CRE2 -> IO Error
@@ -62,7 +71,7 @@ getError ec re = alloca $ \sp -> do
     arg <- B.packCStringLen (argdat, fromIntegral arglen)
     return (Error (Just $ fromIntegral ec) msg arg)
 
-compile :: Encoding -> [CompileOption] -> B.ByteString -> IO (Either Error RE2)
+compile :: Encoding -> [CompileOption] -> B.ByteString -> IO (Either Error (RE2 enc))
 compile enc opts pattern = do
     copts <- cre2_opt_new
     setEncoding copts enc
@@ -81,7 +90,7 @@ compile enc opts pattern = do
             cre2_delete re
             return (Left err)
 
-stats :: RE2 -> IO Stats
+stats :: RE2 enc -> IO Stats
 stats re = withRE2 re $ \p -> do
     ncg <- cre2_num_capturing_groups p
     pgs <- cre2_program_size p
@@ -92,7 +101,7 @@ getAnch Unanchored  = cre2Unanchored
 getAnch AnchorStart = cre2AnchorStart
 getAnch AnchorBoth  = cre2AnchorBoth
 
-match :: MatchOptions -> RE2 -> B.ByteString -> IO (Maybe (Match B.ByteString))
+match :: MatchOptions -> RE2 enc -> B.ByteString -> IO (Maybe (Match B.ByteString))
 match mo re bs = withRE2 re $ \rep -> do
     nmatches <- case moNumGroups mo of
         Just n  -> return n

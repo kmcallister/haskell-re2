@@ -18,9 +18,9 @@ import qualified Data.Text          as T
 import qualified Data.Text.Encoding as T
 
 -- | Compile a regex, given as a @'T.Text'@.
-compile :: [CompileOption] -> T.Text -> Either Error RE2
-compile opts txt = B.compile UTF8 opts (T.encodeUtf8 txt)
+compile :: [CompileOption] -> T.Text -> Either Error (RE2 UTF8)
+compile opts txt = B.compileUTF8 opts (T.encodeUtf8 txt)
 
 -- | Match a compiled regex against the given @'T.Text'@.
-match :: MatchOptions -> RE2 -> T.Text -> Maybe (Match T.Text)
+match :: MatchOptions -> RE2 UTF8 -> T.Text -> Maybe (Match T.Text)
 match opts re txt = fmap (fmap T.decodeUtf8) . B.match opts re $ T.encodeUtf8 txt
