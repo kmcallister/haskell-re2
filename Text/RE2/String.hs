@@ -1,17 +1,18 @@
 -- | Regex matching for @'String'@s.
 module Text.RE2.String
-    ( -- * Regex matching
+    ( -- * Building regexes
       compile
-    , match
 
-      -- * Types
-    , RE2
+      -- * Using regexes
+    , match
     , stats
+
+      -- * Exported for convenience
     , module Text.RE2.Types
     ) where
 
 import Text.RE2.Types
-import Text.RE2.ByteString ( RE2, stats )
+import Text.RE2.ByteString ( stats )
 import qualified Text.RE2.ByteString as B
 
 import qualified Data.ByteString.UTF8 as U

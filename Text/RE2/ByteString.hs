@@ -1,18 +1,18 @@
 -- | Regex matching for @'B.ByteString'@s.
 module Text.RE2.ByteString
-    ( -- * Regex matching
+    ( -- * Building regexes
       compileUTF8
     , compileLatin1
-    , match
 
-      -- * Types
-    , RE2
+      -- * Using regexes
+    , match
     , stats
+
+      -- * Exported for convenience
     , module Text.RE2.Types
     ) where
 
 import Text.RE2.Types
-import Text.RE2.IO ( RE2 )
 import qualified Text.RE2.IO as I
 
 import qualified Data.ByteString as B

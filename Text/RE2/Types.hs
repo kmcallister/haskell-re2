@@ -5,9 +5,12 @@
     -fno-warn-unused-imports #-}
 -- | Types used in compiling and matching regexes.
 module Text.RE2.Types
-    ( -- * Compile options
-      CompileOption(..)
+    ( -- * Regular expressions
+      RE2
     , UTF8, Latin1
+
+      -- * Compile options
+    , CompileOption(..)
 
       -- * Match options
     , MatchOptions(..)
@@ -21,21 +24,15 @@ module Text.RE2.Types
     , Stats(..)
     ) where
 
+import Text.RE2.Types.Internal ( RE2, UTF8, Latin1 )
+
 import qualified Data.ByteString as B
 import qualified Data.Sequence   as S
 
 import Data.Text       ( Text       )
 import Data.ByteString ( ByteString )
+import Data.Data       ( Typeable, Data )
 
-import Data.Data ( Typeable, Data )
-
--- | Tag type denoting a regex which operates on UTF8-encoded text.
-data UTF8
-    deriving (Typeable)
-
--- | Tag type denoting a regex which operates on Latin1-encoded text.
-data Latin1
-    deriving (Typeable)
 
 -- | Options available when compiling a regex.
 --

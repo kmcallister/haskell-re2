@@ -33,6 +33,7 @@ library
   other-modules:
       Text.RE2.C
     , Text.RE2.IO
+    , Text.RE2.Types.Internal
   ghc-options:
       -Wall
   build-depends:

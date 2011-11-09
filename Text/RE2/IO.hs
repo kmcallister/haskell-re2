@@ -1,15 +1,15 @@
 {-# LANGUAGE
     DeriveDataTypeable #-}
 module Text.RE2.IO
-    ( RE2
-    , compile
+    ( compile
     , match
     , stats
     , Encoding(..)
     ) where
 
 import Text.RE2.C
-import Text.RE2.Types as Ty
+import Text.RE2.Types
+import Text.RE2.Types.Internal ( RE2(..) )
 
 import Foreign
 import Foreign.C
@@ -48,14 +48,6 @@ setEncoding :: Ptr CRE2_Options -> Encoding -> IO ()
 setEncoding opt = go where
     go UTF8   = cre2_opt_encoding opt cre2Utf8
     go Latin1 = cre2_opt_encoding opt cre2Latin1
-
-
--- | Abstract type representing a compiled regex.
---
--- Parametrized by a character encoding, either @'Ty.UTF8'@
--- or @'Ty.Latin1'@.
-newtype RE2 enc = RE2 (ForeignPtr CRE2)
-    deriving (Typeable)
 
 manage :: Ptr CRE2 -> IO (RE2 enc)
 manage ptr = RE2 `fmap` newForeignPtr ptr_cre2_delete ptr
