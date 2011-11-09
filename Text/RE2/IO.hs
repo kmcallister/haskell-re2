@@ -1,5 +1,3 @@
-{-# LANGUAGE
-    DeriveDataTypeable #-}
 module Text.RE2.IO
     ( compile
     , match
@@ -19,8 +17,6 @@ import Control.Monad
 import qualified Data.ByteString        as B
 import qualified Data.ByteString.Unsafe as B
 import qualified Data.Sequence          as S
-
-import Data.Data ( Typeable )
 
 
 setOption :: Ptr CRE2_Options -> CompileOption -> IO ()
