@@ -31,12 +31,14 @@ extra-source-files:
 library
   exposed-modules:
       Text.RE2.Types
-    , Text.RE2.ByteString
+    , Text.RE2.ByteString.UTF8
+    , Text.RE2.ByteString.Latin1
     , Text.RE2.Text
     , Text.RE2.String
   other-modules:
       Text.RE2.C
     , Text.RE2.IO
+    , Text.RE2.Pure
     , Text.RE2.Types.Internal
   ghc-options:
       -Wall
