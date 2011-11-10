@@ -83,19 +83,19 @@ data Anchor
 -- and use @'def'@.
 data MatchOptions = MatchOptions
     { -- | Anchor match at start or end of input?
-      moAnchor    :: Anchor
+      anchor :: Anchor
 
       -- | If @'Just' n@, only store the first @n@ capturing groups.  This
       -- includes the whole-match group, so @Just 1@ returns only that group,
       -- and @Just 0@ is a Boolean match only.
-    , moNumGroups :: Maybe Int
+    , numGroups :: Maybe Int
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
 
 -- | Default @'MatchOptions'@.
 defMatchOptions :: MatchOptions
 defMatchOptions = MatchOptions
-    { moAnchor    = Unanchored
-    , moNumGroups = Nothing }
+    { anchor    = Unanchored
+    , numGroups = Nothing }
 
 instance Default MatchOptions where
     def = defMatchOptions
@@ -104,13 +104,13 @@ instance Default MatchOptions where
 --
 -- Parametrized by the string type: @'ByteString'@, @'Text'@, or @'String'@.
 data Group str = Group
-    { grByteStart  :: Int  -- ^ The byte index of the start of this group.
-    , grByteLength :: Int  -- ^ The length of this group in bytes.
-    , grString     :: str  -- ^ The string which was matched.
+    { byteStart  :: Int  -- ^ The byte index of the start of this group.
+    , byteLength :: Int  -- ^ The length of this group in bytes.
+    , captured   :: str  -- ^ The string which was captured.
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
 
 instance Functor Group where
-    fmap f gr = gr { grString = f (grString gr) }
+    fmap f gr = gr { captured = f (captured gr) }
 
 -- | A successful regex match.
 --
@@ -124,6 +124,8 @@ instance Functor Match where
 
 -- | Some statistics about a compiled regex.
 data Stats = Stats
-    { stNumCapturingGroups :: Int  -- ^ The number of capturing groups.
-    , stProgramSize        :: Int  -- ^ The program size, a rough cost measure.
+    { -- | The number of capturing groups, not including the whole-match group.
+      numCapturingGroups :: Int
+      -- | The program size, a rough cost measure.
+    , programSize        :: Int
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
