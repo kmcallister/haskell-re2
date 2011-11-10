@@ -91,7 +91,7 @@ getAnch AnchorBoth  = cre2AnchorBoth
 
 match :: MatchOptions -> RE2 enc -> B.ByteString -> IO (Maybe (Match B.ByteString))
 match mo re bs = withRE2 re $ \rep -> do
-    nmatches <- case numGroups mo of
+    nmatches <- case captureLimit mo of
         Just n  -> return n
         Nothing -> ((+1) . fromIntegral) `fmap` cre2_num_capturing_groups rep
     allocaArray nmatches $ \arr ->

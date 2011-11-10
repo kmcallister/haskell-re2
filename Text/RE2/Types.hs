@@ -88,14 +88,14 @@ data MatchOptions = MatchOptions
       -- | If @'Just' n@, only store the first @n@ capturing groups.  This
       -- includes the whole-match group, so @Just 1@ returns only that group,
       -- and @Just 0@ is a Boolean match only.
-    , numGroups :: Maybe Int
+    , captureLimit :: Maybe Int
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
 
 -- | Default @'MatchOptions'@.
 defMatchOptions :: MatchOptions
 defMatchOptions = MatchOptions
-    { anchor    = Unanchored
-    , numGroups = Nothing }
+    { anchor       = Unanchored
+    , captureLimit = Nothing }
 
 instance Default MatchOptions where
     def = defMatchOptions
@@ -125,7 +125,7 @@ instance Functor Match where
 -- | Some statistics about a compiled regex.
 data Stats = Stats
     { -- | The number of capturing groups, not including the whole-match group.
-      numCapturingGroups :: Int
+      numGroups   :: Int
       -- | The program size, a rough cost measure.
-    , programSize        :: Int
+    , programSize :: Int
     } deriving (Eq, Ord, Show, Read, Typeable, Data)
