@@ -15,7 +15,11 @@ description:
     .
     RE2 is very fast, and is free of the exponential-time worst-case behavior common
     to backtracking-based regex libraries.  RE2 implements most Perl\/PCRE regex
-    features, and also has a POSIX-compatible mode.
+    features, and can also be restricted to POSIX egrep syntax.
+    .
+    This interface supports the Unicode @String@ and @Text@ types, as well as
+    UTF8-encoded @ByteString@s and Latin1-encoded @ByteString@s.  You can build a
+    regex from one of these types and apply it to another.
     .
     This package also implements a plain C API for a subset of RE2.  This wrapping
     layer could be useful on its own.

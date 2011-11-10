@@ -34,8 +34,8 @@ compileLatin1 opts bs = unsafePerformIO (I.compile I.Latin1 opts bs)
 
 -- | Match a compiled regex against the given @'B.ByteString'@.
 --
--- The input @'B.ByteString'@ is interpreted according to the character
--- encoding specified by the type argument to @'RE2'@.
+-- The character encoding of the input should match the type argument to
+-- @'RE2'@.
 match :: MatchOptions -> RE2 enc -> B.ByteString -> Maybe (Match B.ByteString)
 match opts re bs = unsafePerformIO (I.match opts re bs)
 
