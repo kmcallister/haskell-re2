@@ -20,8 +20,8 @@ import qualified Data.Text.Encoding as T
 
 -- | Compile a regex, given as a @'T.Text'@.
 compile :: [CompileOption] -> T.Text -> Either Error (RE2 UTF8)
-compile opts txt = B.compileUTF8 opts (T.encodeUtf8 txt)
+compile opts = B.compileUTF8 opts . T.encodeUtf8
 
 -- | Match a compiled regex against the given @'T.Text'@.
 match :: MatchOptions -> RE2 UTF8 -> T.Text -> Maybe (Match T.Text)
-match opts re txt = fmap (fmap T.decodeUtf8) . B.match opts re $ T.encodeUtf8 txt
+match opts re = fmap (fmap T.decodeUtf8) . B.match opts re . T.encodeUtf8

@@ -19,8 +19,8 @@ import qualified Data.ByteString.UTF8 as U
 
 -- | Compile a regex, given as a @'String'@.
 compile :: [CompileOption] -> String -> Either Error (RE2 UTF8)
-compile opts str = B.compileUTF8 opts (U.fromString str)
+compile opts = B.compileUTF8 opts . U.fromString
 
 -- | Match a compiled regex against the given @'String'@.
 match :: MatchOptions -> RE2 UTF8 -> String -> Maybe (Match String)
-match opts re txt = fmap (fmap U.toString) . B.match opts re $ U.fromString txt
+match opts re = fmap (fmap U.toString) . B.match opts re . U.fromString
