@@ -29,6 +29,7 @@ import Text.RE2.Types.Internal ( RE2, UTF8, Latin1 )
 import qualified Data.ByteString as B
 import qualified Data.Sequence   as S
 
+import Data.Default
 import Data.Text       ( Text       )
 import Data.ByteString ( ByteString )
 import Data.Data       ( Typeable, Data )
@@ -77,6 +78,9 @@ data Anchor
     deriving (Eq, Ord, Show, Read, Typeable, Data, Enum, Bounded)
 
 -- | Options available when matching with a regex.
+--
+-- For default options use @'defMatchOptions'@, or import @Data.Default@
+-- and use @'def'@.
 data MatchOptions = MatchOptions
     { -- | Anchor match at start or end of input?
       moAnchor    :: Anchor
@@ -92,6 +96,9 @@ defMatchOptions :: MatchOptions
 defMatchOptions = MatchOptions
     { moAnchor    = Unanchored
     , moNumGroups = Nothing }
+
+instance Default MatchOptions where
+    def = defMatchOptions
 
 -- | A capturing group.
 --

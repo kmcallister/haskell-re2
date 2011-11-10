@@ -43,11 +43,12 @@ library
   ghc-options:
       -Wall
   build-depends:
-      base        >= 3 && < 5
-    , bytestring  >= 0.9
-    , containers  >= 0.4
-    , text        >= 0.11
-    , utf8-string >= 0.3
+      base         >= 3 && < 5
+    , bytestring   >= 0.9
+    , containers   >= 0.4
+    , text         >= 0.11
+    , utf8-string  >= 0.3
+    , data-default >= 0.2
   other-extensions:
       ForeignFunctionInterface
     , EmptyDataDecls
