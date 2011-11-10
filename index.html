@@ -1,0 +1,14 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>re2-0.0: Interface to the RE2 regex library</title><link href="ocean.css" rel="stylesheet" type="text/css" title="Ocean" /><script src="haddock-util.js" type="text/javascript"></script><script type="text/javascript">//<![CDATA[
+window.onload = function () {pageLoad();};
+//]]>
+</script></head><body><div id="package-header"><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul><p class="caption">re2-0.0: Interface to the RE2 regex library</p></div><div id="content"><div id="description" class="doc"><h1>re2-0.0: Interface to the RE2 regex library</h1><p>This library provides a Haskell interface to the RE2 regular expression library,
+available from <a href="http://code.google.com/p/re2/">http://code.google.com/p/re2/</a>.
+</p><p>RE2 is very fast, and is free of the exponential-time worst-case behavior common
+to backtracking-based regex libraries.  RE2 implements most Perl/PCRE regex
+features, and can also be restricted to POSIX egrep syntax.
+</p><p>This interface supports the Unicode <code>String</code> and <code>Text</code> types, as well as
+UTF8-encoded <code>ByteString</code>s and Latin1-encoded <code>ByteString</code>s.  You can build a
+regex from one of these types and apply it to another.
+</p><p>This package also implements a plain C API for a subset of RE2.  This wrapping
+layer could be useful on its own.
+</p></div><div id="module-list"><p class="caption">Modules</p><ul><li><span id="control.n.1" class="module collapser" onclick="toggleSection('n.1')">Text</span><ul id="section.n.1" class="show"><li><span id="control.n.1.1" class="module collapser" onclick="toggleSection('n.1.1')">RE2</span><ul id="section.n.1.1" class="show"><li><span id="control.n.1.1.1" class="module collapser" onclick="toggleSection('n.1.1.1')">ByteString</span><ul id="section.n.1.1.1" class="show"><li><span class="module"><a href="Text-RE2-ByteString-Latin1.html">Text.RE2.ByteString.Latin1</a></span></li><li><span class="module"><a href="Text-RE2-ByteString-UTF8.html">Text.RE2.ByteString.UTF8</a></span></li></ul></li><li><span class="module"><a href="Text-RE2-String.html">Text.RE2.String</a></span></li><li><span class="module"><a href="Text-RE2-Text.html">Text.RE2.Text</a></span></li><li><span class="module"><a href="Text-RE2-Types.html">Text.RE2.Types</a></span></li></ul></li></ul></li></ul></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.9.2</p></div></body></html>
