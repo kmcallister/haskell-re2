@@ -3,7 +3,7 @@ available from:
 
     http://code.google.com/p/re2/
 
-It also implements a plain C API for a subset of RE2.  This wrapping layer
+The cbits/ directory implements a plain C API for a subset of RE2.  This layer
 could be useful on its own.
 
 
