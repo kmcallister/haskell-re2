@@ -7,6 +7,10 @@ The cbits/ directory implements a plain C API for a subset of RE2.  This layer
 could be useful on its own.
 
 
+Documentation is hosted at:
+
+    http://kmcallister.github.com/haskell-re2/
+
 To build the documentation, run
 
   $ cabal configure && cabal haddock --hyperlink-source
